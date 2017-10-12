@@ -149,9 +149,11 @@ on_client_unsubscribe(ClientId, Username, Topics, _Env) ->
 on_message_publish(Message = #mqtt_message{topic = <<"$SYS/", _/binary>>}, _Env) ->
     {ok, Message};
 
+%% Publish message
 on_message_publish(Message, _Env) ->
     io:format("publish here ~s~n", [emqttd_message:format(Message)]),   
 
+    
     %From = Message#mqtt_message.from,
     % Sender =  Message#mqtt_message.sender,
     Topic = Message#mqtt_message.topic,
