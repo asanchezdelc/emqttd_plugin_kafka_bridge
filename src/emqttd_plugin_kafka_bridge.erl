@@ -154,8 +154,7 @@ on_message_publish(Message, _Env) ->
     io:format("publish here ~s~n", [emqttd_message:format(Message)]),   
 
     
-    %From = Message#mqtt_message.from,
-    % Sender =  Message#mqtt_message.sender,
+    {ClientId, Username} = Message#mqtt_message.from,
     Topic = Message#mqtt_message.topic,
     Payload = Message#mqtt_message.payload, 
     QoS = Message#mqtt_message.qos,
@@ -163,13 +162,13 @@ on_message_publish(Message, _Env) ->
 
     Json = mochijson2:encode([
         {type, <<"published">>},
-        {client_id, <<"admin">>},
+        {client_id, ClientId},
+        {username, Username},
         {ts, emqttd_time:now_secs(Timestamp)},
-        {topic, Topic}
-        %{payload, Payload}
-        %{qos, QoS},
-        %{cluster_node, node()},
-        %
+        {topic, Topic},
+        {payload, Payload},
+        {qos, QoS},
+        {cluster_node, node()}        
     ]),
     
 
